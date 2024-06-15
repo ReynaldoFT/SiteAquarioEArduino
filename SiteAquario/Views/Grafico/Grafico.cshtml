@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+</head>
+
+<canvas id="sensorChart" width="400" height="200"></canvas>
+
+
+<script>
+    var ctx = document.getElementById('sensorChart').getContext('2d');
+    var sensorChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [], // labels vazias, serão preenchidas dinamicamente
+            datasets: [{
+                label: 'Temperatura',
+                data: [],
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                fill: false
+            },
+            {
+                label: 'pH',
+                data: [],
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'second'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tempo'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Valores'
+                    }
+                }
+            }
+        }
+    });
+
+    // Conecta ao hub SignalR
+    var connection = new signalR.HubConnectionBuilder().withUrl("/sensorHub").build();
+
+    connection.on("ReceiveSensorData", function (sensorData) {
+        var now = new Date(sensorData.dataCadastro);
+
+        // Adiciona os dados ao gráfico
+        sensorChart.data.labels.push(now);
+        sensorChart.data.datasets[0].data.push(sensorData.temperatura);
+        sensorChart.data.datasets[1].data.push(sensorData.ph);
+
+        // Atualiza o gráfico
+        sensorChart.update();
+    });
+
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+</script>
+</body>
+</html>

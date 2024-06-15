@@ -1,0 +1,37 @@
+﻿@model SiteAquario.Models.ValoresSensor
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="text-center">
+    <h1>Detalhes</h1>
+</div>
+
+<div>
+    <div class="card-header"><h4>Valores do Sensor</h4> </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Ph)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Ph)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Temperatura)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Temperatura)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DataCadastro)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DataCadastro)
+            </dd>
+        </dl>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ValoresSensorID" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>  <a asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-circle-left"></i> Volta para a lista</a>
+</div>
