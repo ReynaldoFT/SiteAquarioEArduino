@@ -22,7 +22,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.Urls.Add("http://0.0.0.0:5000");
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
